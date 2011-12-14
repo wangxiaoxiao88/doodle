@@ -20,7 +20,8 @@ def index():
 @need_login
 @need_api
 def guess():
-        guessed_name = request.args.get('guessed_name').strip()
+        if request.args.get('guessed_name'):
+            guessed_name = request.args.get('guessed_name').strip()
         if guessed_name:
                 guessed_user, fans = None, False
                 try:
