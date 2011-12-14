@@ -20,8 +20,8 @@ def index():
 @need_login
 @need_api
 def guess():
-        if request.args.get('guessed_name'):
-            guessed_name = request.args.get('guessed_name').strip()
+    if request.args.get('guessed_name'):
+        guessed_name = request.args.get('guessed_name').strip()
         if guessed_name:
                 guessed_user, fans = None, False
                 try:
@@ -32,24 +32,24 @@ def guess():
                     fans = g.api.exists_friendship(user_a = guessed_user.id, user_b = g.weibo.id).friends
                 except:
                     return render_template('guess.html', error=u"获取好友关系失败，请稍候再试")
-        else:
-            return render_template('guess.html', error=u"微博昵称不能为空")
+    else:
+        return render_template('guess.html', error=u"微博昵称不能为空")
 
-        if guessed_user:
-            constellation_id, rate, error = worker.guess(id=guessed_user.id)
-            if rate <= 30:
-                constellation_id, rate, error = worker.guess(id=guessed_user.id)            
-            constellation = constellations[constellation_id][1]
+    if guessed_user:
+        constellation_id, rate, error = worker.guess(id=guessed_user.id)
+        if rate <= 30:
+            constellation_id, rate, error = worker.guess(id=guessed_user.id)            
+        constellation = constellations[constellation_id][1]
 
-            if error:
-                return render_template('guess.html', error=error)
+        if error:
+            return render_template('guess.html', error=error)
 
-            Guess.set(guesser_id=g.user.id, guessed_id=guessed_user.id, constellation_id=constellation_id, rate=rate)
-            Weibo.set(weibo=guessed_user)
-            guessed_weibo = Weibo.get(id=guessed_user.id)[0]
-            message = weibo_txt(fans=fans, screen_name=guessed_weibo.screen_name, constellation=constellation, rate=rate)
-            rate = str(rate) + "%"
-            return render_template('guess.html',constellation=constellation, rate=rate, message=message, error=None, guessed_weibo=guessed_weibo)
-        else:
-            return render_template('guess.html', error=u'无法获取该用户的微博信息')
-            
+        Guess.set(guesser_id=g.user.id, guessed_id=guessed_user.id, constellation_id=constellation_id, rate=rate)
+        Weibo.set(weibo=guessed_user)
+        guessed_weibo = Weibo.get(id=guessed_user.id)[0]
+        message = weibo_txt(fans=fans, screen_name=guessed_weibo.screen_name, constellation=constellation, rate=rate)
+        rate = str(rate) + "%"
+        return render_template('guess.html',constellation=constellation, rate=rate, message=message, error=None, guessed_weibo=guessed_weibo)
+    else:
+        return render_template('guess.html', error=u'无法获取该用户的微博信息')
+        
