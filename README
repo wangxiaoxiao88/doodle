@@ -1,0 +1,35 @@
+doodle V0.1
+
+doodle is an app on open weibo
+http://caicaini.sinaapp.com
+
+1. install
+requires:
+Flask
+
+install example:
+easy_install flask
+
+Tips:
+we use autumn orm, but a litte modify:
+file:autumn/db/connection.py 13 line
+add a line: return self.connection
+    
+2. change config
+cd doodle/
+vi config.py
+
+3. create databases:
+#if user=root passwd=123456
+shell>mysql -uroot -p123456
+mysql>create database doodle
+mysql>exit
+shell> mysql -uroot -p123456  doodle < doodle/models/db.sql 
+
+
+4. run
+cd doodle/
+python doodle.py
+
+5. browse
+http://localhost:7777
