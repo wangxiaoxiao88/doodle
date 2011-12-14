@@ -1,4 +1,4 @@
-doodle V0.1
+doodle version 0.1
 
 doodle is an app on open weibo
 http://caicaini.sinaapp.com
@@ -11,8 +11,10 @@ install example:
 easy_install flask
 
 Tips:
-we use autumn orm, but a litte modify:
-file:autumn/db/connection.py 13 line
+we use autumn orm:
+https://github.com/luckythetourist/autumn
+but a litte modify:
+file:autumn/db/connection.py line 13
 add a line: return self.connection
     
 2. change config
